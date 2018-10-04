@@ -3,7 +3,9 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>LOGIN</title>
+	<link rel="stylesheet" type="text/css" href="css/varios.css">
 	<link rel="stylesheet" type="text/css" href="css/index.css">
+
 </head>
 <body >
 	
@@ -20,6 +22,7 @@
 				<input class ="password" type="password" name="password">
 
 				<input class="submit" type="submit" name="enviar" value="INGRESAR" >
+				<a href="view/principal.php">falso</a>
 				<a href="#">¿Olvido su Contraseña?</a>
 			</div>
 		</div>

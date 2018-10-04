@@ -1,0 +1,49 @@
+
+
+.bannerprincipal{
+	width: 100%;
+	height: 200px;
+	background-color: blue;
+}
+.img{
+	width: 100%;
+	height: 100%;
+}
+
+
+#conteiner{
+	width: 100%;
+	height: 40px;
+	
+}
+.row1{
+	width: 80%;
+	margin-left: 10%;
+	height: 40px;
+}
+.row-bienvenida h1{
+	float: left;
+	width: auto;
+	margin: 0;padding: 0;
+	font-size: 1em;
+	color: #0A0A0A;
+	line-height: 40px;
+	font-weight: bolder;
+}
+.row-bienvenida  h2{
+	float: left;
+	width: auto;
+	margin: 0;padding: 0;
+	font-size: 1em;
+	color: #393939;
+	line-height: 40px;
+}
+
+.btn-cerrarsesion{
+	width: auto;
+	height: auto;
+	line-height: 40px;
+	font-size: 1.1em;
+	float: right;
+	color: #4069B5;
+}

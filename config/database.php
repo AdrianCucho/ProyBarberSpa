@@ -1,6 +1,6 @@
 <?php
 
-$server = 'localhost';
+$server = '192.168.0.31';
 $bd = 'prueba';
 $usr='root';
 $pwd ='1450pepe';
