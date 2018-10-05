@@ -1,0 +1,20 @@
+ 
+--## CLIENTES ##--
+En la tabla de clientes se registrara a todas las personas, para poder utilizar sus datos como clientes o empleados(de ser el caso).
+
+--## EMPLEADOS ## --
+La tabla de empleados se crea en base a un cliente previamente registrado, este, contara con un tabla extra llamada "tb_perfil", para saber el perfil del empleado(admin, recepcion, barber).
+Ademas, contara con una tabla adicional
+
+
+
+
+
+--### USUARIOS ####--
+Los usuarios superadmin de cada bd, tendra como registro de cliente(0) y empleado(0).
+Los usuarios que se registraran desde la BDgestion seran de tipo root.
+
+Todos los nuevos usuarios se registraran en la tabla usuario de la BDGESTION con rol  ROOT,al iniciar sesion, el sistema validara su rool en la bdgestion el cual solo tendra acceso a registrar usuarios nuevos, pero para la BD que este configurado en su registro de idclientepp(solo registraraa un admin).
+
+Este usuario admin, estara amarrado con el codigo de usuario de la BDGESTION, para poder consultar la configuracion nde la bd que le corresponde.
+Este usuario admin tendra acceso a todos los modulos de acuerdo al plan que tiene configurado su usuario root que esta amarrado y este usuario 

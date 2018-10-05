@@ -1,0 +1,6 @@
+Este sistema se esta desarrollando para permitir a los dueños de barberias y spa, tener una solucion tecnologica, donde van a poder administrar sus negocios.
+
+
+
+
+Se creara una BDGESTION.. donde se tendra informacion de los contratos de los clientes,ademas se registraran la bd
