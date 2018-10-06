@@ -11,10 +11,7 @@ Ademas, contara con una tabla adicional
 
 
 --### USUARIOS ####--
-Los usuarios superadmin de cada bd, tendra como registro de cliente(0) y empleado(0).
-Los usuarios que se registraran desde la BDgestion seran de tipo root.
 
-Todos los nuevos usuarios se registraran en la tabla usuario de la BDGESTION con rol  ROOT,al iniciar sesion, el sistema validara su rool en la bdgestion el cual solo tendra acceso a registrar usuarios nuevos, pero para la BD que este configurado en su registro de idclientepp(solo registraraa un admin).
+Cada vez que se consiga un nuevo cliente, se va a tener que sacar una copia del script o de la bd de `pruebas y se va a copiar el poroyecto en php, se va a montar en el servidor y crearemos un usuario root en BD, con ese usuario, vamos a crear un usuario de tipo admin, que sera enviado via correo electronico, para que el usuariuo pueda habilitar el sistema y empiece a trabajar.
 
-Este usuario admin, estara amarrado con el codigo de usuario de la BDGESTION, para poder consultar la configuracion nde la bd que le corresponde.
-Este usuario admin tendra acceso a todos los modulos de acuerdo al plan que tiene configurado su usuario root que esta amarrado y este usuario 
+UserRoot -> Este usuario tendra los modulos de usuarioADM y ConfigPlanModeulos, donde el podra realizar el registro de usuarios admin para cada bd de cada usuario., tambien, de reehabilitar los modulos de acuerdo al plan que tiene actual.

@@ -2,27 +2,48 @@
 
 -- La BD principal o generica se llamara prueba, esta BD se guardara en un archivo o script aparte, para que cuando un cliente nuevo se registre
 -- se cambie el nombre y empiece a trabajar
+-- drop database SYS_PRUEBA1;
 create database SYS_PRUEBA1 DEFAULT CHARACTER SET utf8;
 USE SYS_PRUEBA1;
 
 /**########################*/
 -- TABLAS DE CONFIGURACION
 /**########################*/
+create table rol( idrol varchar(3),rol varchar(50));
 -- aqui se registrara el plan actual.
 create table planactual(idplan varchar(3),plan varchar(50),fechIniVigencia date,fechFinVigencia date,nulldate date default null,isactivo int default 1);
 
 /***tablas de planes * modulos***/
 create table modulos(idmodulo int primary key auto_increment,nombremodulo varchar(50),rutamodulo varchar(100),rutaimgmodulo varchar(100),fechregistro date,
-fechaproduccion date,isactivo int default 1,desarrolladopor varchar(30));
-create table rol (idrol varchar(4),rol varchar(50));
--- tabla de interseccion entre modulos y planes y roles
-create table moduloPlanRol(idplan varchar(3),idrol varchar(4),idmodulo int,fecharegistro date,isactivo int  default 1,foreign key (idplan) references planes(idplan),
-foreign key (idmodulo) references modulos(idmodulo),foreign key(idrol)references rol(idrol));
+fechaproduccion date,isactivo int default 0,desarrolladopor varchar(30),idplan varchar(3),idrol varchar(3),
+foreign key (idplan) references planactual(idplan),
+foreign key(idrol) references rol(idrol)
+);
 
 
 
+/*###########################*/
+/* GESTION DE USUARIOS */
+/*###########################*/
 
-
+create table usuario(
+idusuario varchar(50) primary key unique,
+password varchar(50),
+correo varchar(100),
+idrol varchar(3),
+apePaterno varchar(50),
+apeMaterno varchar(50),
+nombre varchar(50),
+celular varchar(15),
+pinseguridad varchar(4),
+fechregistro date,
+fechaUltimoSesion datetime,
+token varchar(50),
+isactivo int default 0,
+idcliente int null,
+foreign key(idcliente) references tb_cliente(idcliente),
+foreign key(idrol) references rol(idrol)
+);
 
 
 
@@ -96,9 +117,26 @@ CREATE TABLE `tb_cliente` (
     FOREIGN KEY (`segmento`)   REFERENCES `Sys_ProyectoBarberSpa`.`tb_segmento` (`idSegmento`));
     
     
+/*###########################*/
+/* GESTION DE EMPLEADOS */
+/*###########################*/
+create table tipoEmpleado(idtipoEmpleado varchar(5),tipoEmpleado varchar(50));
+
+CREATE table empleado(
+idemp int  primary key,
+idcliente int,
+fecharegistro date,
+sueldobase decimal(9,2) default 0.0,
+comision decimal(9,2) default 0.0,
+idtipoEmpleado varchar(5),
+isactivo int default 1,
+foreign key(idtipoEmpleado) references tipoEmpleado(idtipoEmpleado));
+
     
-    
-/**TABLAS DE CONTROL -- CONTADORAS,HISTORIALES.VISTAS */
+/*###########################*/
+/* TABLAS DE CONTROL - contadores, historiales */
+/*###########################*/
+
 -- falta crear tabla
 create table tb_clientevisitas(
 id int primary key auto_increment,

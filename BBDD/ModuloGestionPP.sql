@@ -4,9 +4,9 @@ use bd_gestion;
 create table tiponegocio(idtiponegocio int primary key,tiponegocio varchar(50));/*Salon belleza, BARBERSHOR, SPA*/
 create table planes(idplan varchar(3) primary key,plan varchar(2));/*PLAN 1 ,PLAN ECONOMICO, PLAN PREMIUM*/
 
-create table if not exists tb_departamento(iddepartamento char(2) primary key,departamento varchar(50));
-create table if not exists tb_provincia(iddepartamento char(2),idprovincia char(2),provincia varchar(50),primary key(iddepartamento,idprovincia));
-create table if not exists tb_distrito(iddepartamento char(2),idprovincia char(2),iddistrito char(2),distrito varchar(50),primary key(iddistrito,idprovincia,iddepartamento));
+create table tb_departamento(iddepartamento char(2) primary key,departamento varchar(50));
+create table tb_provincia(iddepartamento char(2),idprovincia char(2),provincia varchar(50),primary key(iddepartamento,idprovincia));
+create table tb_distrito(iddepartamento char(2),idprovincia char(2),iddistrito char(2),distrito varchar(50),primary key(iddistrito,idprovincia,iddepartamento));
 
 create table clientePP(
 id int primary key auto_increment,
@@ -26,7 +26,7 @@ nombresRepre varchar(100),
 idplan varchar(3),
 monto decimal(9,2),
 fecharegistro date,
-foreign key(iddistrito) references tb_diutrito(iddistrito),
+foreign key(iddistrito) references tb_distrito(iddistrito),
 foreign key(idtiponegocio) references tiponegocio(idtiponegocio),
 foreign key(idplan) references planes(idplan)
 );
@@ -45,7 +45,9 @@ fechainicio date,
 fechafin date,
 nulldate date default null,
 monto decimal(9,2),
-foreign key (idcliente)references clientePP(id)
+idplan varchar(3),
+foreign key (idcliente)references clientePP(id),
+foreign key (idplan) references planes(idplan)
 );
 
 
@@ -72,18 +74,3 @@ foreign key (idmodulo) references modulos(idmodulo)
 );
 
 
-select * from bdproysonko.tb_color;
-
--- -----------------------------------------------------
--- Table `Sys_ProyectoBarberSpa`.`tb_usuario`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `usuario` (
-  idusuario varchar(100)  unique,
-  `login` VARCHAR(50) NULL,
-  `password` VARCHAR(50) NULL,
-  `fechRegistro` DATE NULL,
-  `isActivo` INT NULL,
-  `pinSeguridad` VARCHAR(6) NOT NULL,
-  `token` VARCHAR(15) NULL,
-  PRIMARY KEY (`idusuario`)
-    );
