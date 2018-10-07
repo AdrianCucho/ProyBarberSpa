@@ -14,19 +14,9 @@
 	<div id="contenedor">
 		<div class="modulo">
 			<article >
-				<img src="../img/pruebas/servicios.png" height="100%" width="100%">
-				<div class="h1">USUARIOS</div>
+				<a href=""><img src="../img/pruebas/servicios.png" height="100%" width="100%"></a>
 			</article>
 		</div>
-		<div class="modulo">
-			<article">
-				<img src="../img/pruebas/servicios.png" height="100%" width="100%">
-				<div class="h1">MANTENI</div>
-			</article>
-		</div>
-	
-		
-
 	</div>
 
 

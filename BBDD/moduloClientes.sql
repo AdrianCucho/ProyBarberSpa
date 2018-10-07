@@ -9,10 +9,8 @@ USE SYS_PRUEBA1;
 /**########################*/
 -- TABLAS DE CONFIGURACION
 /**########################*/
-create table rol( idrol varchar(3),rol varchar(50));
 -- aqui se registrara el plan actual.
 create table planactual(idplan varchar(3),plan varchar(50),fechIniVigencia date,fechFinVigencia date,nulldate date default null,isactivo int default 1);
-
 /***tablas de planes * modulos***/
 create table modulos(idmodulo int primary key auto_increment,nombremodulo varchar(50),rutamodulo varchar(100),rutaimgmodulo varchar(100),fechregistro date,
 fechaproduccion date,isactivo int default 0,desarrolladopor varchar(30),idplan varchar(3),idrol varchar(3),
@@ -20,32 +18,17 @@ foreign key (idplan) references planactual(idplan),
 foreign key(idrol) references rol(idrol)
 );
 
+create table configuracion(id int primary key,db varchar(100),usr varchar(100),pwd varchar(100),
+fechregistro date,fechinivig date,fechfinvig date,nulldate date default null,isactivo int default 0,nomCliente varchar(100));
 
 
-/*###########################*/
-/* GESTION DE USUARIOS */
-/*###########################*/
-
-create table usuario(
-idusuario varchar(50) primary key unique,
-password varchar(50),
-correo varchar(100),
-idrol varchar(3),
-apePaterno varchar(50),
-apeMaterno varchar(50),
-nombre varchar(50),
-celular varchar(15),
-pinseguridad varchar(4),
-fechregistro date,
-fechaUltimoSesion datetime,
-token varchar(50),
-isactivo int default 0,
-idcliente int null,
-foreign key(idcliente) references tb_cliente(idcliente),
-foreign key(idrol) references rol(idrol)
-);
-
-
+-- ###############################################################
+-- TBLAS ALIMENTADORAS
+-- ###############################################################
+create table dia(id varchar(2) primary key,dia varchar(50));
+create table rol( idrol varchar(3),rol varchar(50));
+create table tipoEmpleado(idtipoEmpleado varchar(5),tipoEmpleado varchar(50));
+create table categorias(id int primary key auto_increment,categoria varchar(100));-- se representa las categorias de los productos.
 
 
 /*###########################*/
@@ -120,7 +103,6 @@ CREATE TABLE `tb_cliente` (
 /*###########################*/
 /* GESTION DE EMPLEADOS */
 /*###########################*/
-create table tipoEmpleado(idtipoEmpleado varchar(5),tipoEmpleado varchar(50));
 
 CREATE table empleado(
 idemp int  primary key,
@@ -132,10 +114,65 @@ idtipoEmpleado varchar(5),
 isactivo int default 1,
 foreign key(idtipoEmpleado) references tipoEmpleado(idtipoEmpleado));
 
+create table horario(idhorario int primary key auto_increment,idempleado int,dia varchar(2),horaEntra time,horaSal time,
+foreign key(idempleado) references empleado(idemp),foreign key(dia)references dia(id));
+create table controlHorario(id int auto_increment primary key,idempleado int,fecha datetime default now());
+
+-- (Se va a asociar los empleados con la categoria - especialidad)
+create table empleadoEspecialidad(idempleado int,idcategoria int,fecha date default now(),
+foreign key(idempleado) references empleado(idemp),foreign key(idcategoria)references categorias(idcategoria));
+
     
+/*###########################*/
+/* GESTION DE USUARIOS */
+/*###########################*/
+
+create table usuario(
+idusuario varchar(50) primary key unique,
+password varchar(50),
+correo varchar(100),
+idrol varchar(3),
+apePaterno varchar(50),
+apeMaterno varchar(50),
+nombre varchar(50),
+celular varchar(15),
+pinseguridad varchar(4),
+fechregistro date,
+fechaUltimoSesion datetime,
+token varchar(50),
+isactivo int default 0,
+idcliente int null,
+idempleado int null,
+foreign key(idcliente) references tb_cliente(idcliente),
+foreign key(idempleado) references empleado(idemp),
+foreign key(idrol) references rol(idrol)
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*###########################*/
 /* TABLAS DE CONTROL - contadores, historiales */
 /*###########################*/
+--
 
 -- falta crear tabla
 create table tb_clientevisitas(
@@ -148,4 +185,5 @@ foreign key(idcliente) references tb_cliente(idCliente),
 foreign key(idventa) references tb_venta(idventa)
 );    
     
+
     

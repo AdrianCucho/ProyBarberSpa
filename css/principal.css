@@ -1,25 +1,25 @@
+
 #contenedor{
 
 	width: 80%;
-	height: auto;
-	margin-left: 9.5%;
-	background-color: red;
+	margin-left: 15%;
+	margin-top: 20px;
 }
 
 .modulo{
-	width: 20%;
-	height: 250px;
+	width: 150px;
+	height: 150px;
 	padding: 1em;
+	margin: auto;
 	float: left;
-	background-color: blue;
 	box-sizing: border-box;
+	display: inline-block;
 }
 
 .modulo article{
 	width: 100%;
 	height: 100%;
 	background-size: 100% 100%;
-	display: inline-block;
 	text-align: center;
 	position: relative;
 }

@@ -1,6 +1,6 @@
 <?php
 
-$server = '192.168.0.31';
+$server = 'localhost';
 $bd = 'prueba';
 $usr='root';
 $pwd ='1450pepe';
@@ -12,7 +12,7 @@ if ($con -> connect_error) {
 }
 
 
-printf("Conexion exitosa!!: %s\n", $con->server_info);
+//printf("Conexion exitosa!!: %s\n", $con->server_info);
 
 
 
