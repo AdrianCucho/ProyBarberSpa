@@ -29,6 +29,7 @@ create table dia(id varchar(2) primary key,dia varchar(50));
 create table rol( idrol varchar(3),rol varchar(50));
 create table tipoEmpleado(idtipoEmpleado varchar(5),tipoEmpleado varchar(50));
 create table categorias(id int primary key auto_increment,categoria varchar(100));-- se representa las categorias de los productos.
+create table idestado(idestado int, estado varchar(2));
 
 
 /*###########################*/
@@ -100,12 +101,27 @@ CREATE TABLE `tb_cliente` (
     FOREIGN KEY (`segmento`)   REFERENCES `Sys_ProyectoBarberSpa`.`tb_segmento` (`idSegmento`));
     
     
+-- ###################################################
+-- FIDELIZACIÓN
+-- ###################################################
+create table fidelizacion(
+id int auto_increment,
+idcliente int,
+codigocliente varchar(8) primary key unique,
+cantVisitas int default 0,
+descuento decimal(9,2),
+fechregistro date,
+foreign key(idcliente) references tb_cliente(idCliente)
+);
+
+
+    
 /*###########################*/
 /* GESTION DE EMPLEADOS */
 /*###########################*/
 
 CREATE table empleado(
-idemp int  primary key,
+idemp int auto_increment primary key,
 idcliente int,
 fecharegistro date,
 sueldobase decimal(9,2) default 0.0,
@@ -152,25 +168,143 @@ foreign key(idrol) references rol(idrol)
 
 
 
+-- ##########################################
+-- PRODUCTOS -- la idea es pasar todos los servicios como productos.
+-- ##########################################
+create table tipoProducto(id char(1) primary key,tipo varchar(50));-- aca se va a definir si es producto(P) o servicio(S)
+create table productos(
+id int primary key auto_increment,
+idtipo int,
+nombre varchar(50),
+descripcion varchar(300),
+precioVenta decimal(9,2) default 0.0,
+precioCompra decimal(9,2) default 0.0,
+isPromo int default 0,
+isActivo int default 1,
+stock int default 0,
+fechRegistro date default now(),
+foreign key(idtipo) references tipoProducto(id));
+
+-- ######################################################################
+-- table control. - se va a tener el control de las entradas y salidas de productos.
+-- ######################################################################
+create table tipoEntradaSalida(id char(1),tipo varchar(50));
+create table entradaSalida(
+id int auto_increment primary key,
+tipo char(1),
+idproducto int,
+cantidad int default 1,
+preUni decimal(9,2) default 0.0,
+precioCompra decimal(9,2) default 0.0,
+fechaRegistro date,
+iduser int,
+foreign key(iduser) references usuario(idusuario),
+foreign key(idproducto)references productos(id)
+);
+
+
+-- tabla de promociones.
+/*
+Esta tabla funcionara de la siguiente forma:
+Si el tipo de promocion es por el total de su compra, se utilizara el campo PORCENTAJE!!
+Si es por producto se utilizara el PROCENTAJE o PRECIODESCUENTO
+Si es por cliente fiel(tarjeta), se tomara porcentajeespecial(para todos) o producto + procentajeespecial
+
+*/
+create table tipoPromocion(id int primary key auto_increment,tipoPromocion varchar(50));
+create table promociones(
+id int primary key auto_increment,
+idproducto int null,
+tipoPromocion int,
+procentaje decimal(9,2),
+porcentajeespecial decimal(9,2),
+preciodescuento decimal(9,2),
+cantMaxima int default 0,
+fechregistro date,
+fechaIniVigencia datetime,
+fechaFinVigencia datetime,
+foreign key(idproducto) references productos(id),
+foreign key(tipoPromocion)references tipoPromocion(id));
+
+
+
+/*#######################################################*/
+-- TABLA DE VENTAS
+/*#######################################################*/
+create table ventas(
+id int auto_increment,
+idventa varchar(15) primary key,
+fechVenta datetime default now(),
+idcliente int null,
+codigocliente int,
+idusuario int,
+preLiquida decimal(9,2) default 0.0,
+preComision decimal(9,2) default 0.0,
+preNeta decimal(9,2) default 0.0,
+igv decimal(9,2) default 0.0,
+descuento decimal(9,2) default 0.0,
+preTOTAL decimal(9,2) default 0.0,
+idestado int,
+foreign key(idestado) references estado(idestado),
+foreign key(idcliente)references tb_cliente(idCliente),
+foreign key(idusuario)references usuario(idusuario),
+foreign key(codigocliente)references fidelizacion(codigocliente)
+);
+
+create table detalleventa(
+id int auto_increment,
+idventa varchar(15),
+idproducto int,
+cantidad int default 0,
+preUni decimal(9,2),
+preventa decimal(9,2),
+foreign key(idproducto) references productos(id)
+);
 
 
 
 
+-- #####################################################
+-- TABLAS DE PAGOS Y COMISIONES
+-- #####################################################
+/* para realizar el pago, se va a buscar el monto a pagar meidante un filtro de fechas entre las ventas realizadas*/
+create table pagos(
+id int auto_increment primary key,
+nroPago int,
+fechPago datetime default now(),
+fechIni date,
+fechFin date,
+idempleado int,
+idestado int,
+foreign key(idestado) references estado(idestado),
+foreign key(idempleado)references empleado(idemp)
+);
 
 
 
 
-
-
-
-
-
+-- ##########################################################
+-- TABLAS DE AGENDA
+-- ##########################################################
+create table agenda(
+idagenda int auto_increment primary key,
+idestado int,
+idservicio int,
+idempleado int,
+fechRegistro date,
+fechReserva date,
+horareserva time,
+duracion time,
+foreign key(idestado) references estado(idestado),
+foreign key(idservicio) references productos(id),
+foreign key(idempleado) references empleado(idemp)
+);
 
 
 
 
 /*###########################*/
-/* TABLAS DE CONTROL - contadores, historiales */
+/* TABLAS DE CONTROL - contadores, historiales */ -- estas tablas seran llenadas por triggers
 /*###########################*/
 --
 
@@ -182,7 +316,7 @@ idventa varchar(15),
 fechavisita datetime,
 monto decimal(9,2) default 0.0,
 foreign key(idcliente) references tb_cliente(idCliente),
-foreign key(idventa) references tb_venta(idventa)
+foreign key(idventa) references ventas(idventa)
 );    
     
 
