@@ -286,6 +286,8 @@ foreign key(idempleado)references empleado(idemp)
 -- ##########################################################
 -- TABLAS DE AGENDA
 -- ##########################################################
+create table dia(id varchar(3), dia varchar(30));
+create table horas(hora time);
 create table agenda(
 idagenda int auto_increment primary key,
 idestado int,
