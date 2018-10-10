@@ -1,3 +1,22 @@
+<?php 
+	require '../config/database.php';
+	include '../config/funciones.php';
+
+	$errors = array();
+
+	if (!empty($_POST)) {
+		$usuario = $mysqli->real_escape_string($_POST('user'));
+		$password = $mysqli->real_escape_string($_POST('password'));
+
+		if(isNullLogin($usuario, $password)){
+			$errors[] = "Debe llenar todos los datos";
+		}
+
+	}
+?>
+
+
+
 <!DOCTYPE html>
 <html id="body">
 <head>
@@ -13,7 +32,7 @@
 	</div>
 
 	<div id="block2">
-		<div id="blockform">
+		<form id="blockform" action="<?php $_SERVER['PHP_SELF']; ?>" method="POST">
 			<div class="titulo"><em>LOGIN</em></div>
 			<div id="cuerpo">
 				<label class="usuario">Usuario</label>
@@ -25,7 +44,7 @@
 				<a href="view/principal.php">falso</a>
 				<a href="#">¿Olvido su Contraseña?</a>
 			</div>
-		</div>
+		</form>
 	</div>
 
 </body>

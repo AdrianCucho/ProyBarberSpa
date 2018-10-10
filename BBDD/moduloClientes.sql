@@ -26,10 +26,15 @@ fechregistro date,fechinivig date,fechfinvig date,nulldate date default null,isa
 -- TBLAS ALIMENTADORAS
 -- ###############################################################
 create table dia(id varchar(2) primary key,dia varchar(50));
-create table rol( idrol varchar(3),rol varchar(50));
-create table tipoEmpleado(idtipoEmpleado varchar(5),tipoEmpleado varchar(50));
+insert into dia (id,dia)values ('LU','Lunes'),('MA','Martes'),('MI','Miercoles'),('JU','Jueves'),('VI','Viernes'),('SA','Sabado'),('DO','Domingo');
+create table rol( idrol varchar(3) primary key,rol varchar(50));
+insert into rol (idrol,rol)values('R','Root'),('A','Administrador'),('V','Vendedor'),('C','Cliente');
+create table tipoEmpleado(idtipoEmpleado varchar(5) primary key,tipoEmpleado varchar(50));
+insert into tipoEmpleado(idtipoempleado,tipoempleado)values('A','Administrador'),('B','Barbero');
 create table categorias(id int primary key auto_increment,categoria varchar(100));-- se representa las categorias de los productos.
-create table idestado(idestado int, estado varchar(2));
+insert into categorias(categoria)values('Cortes'),('Peinados'),('Mascarillas');
+create  table estado(idestado int primary key, estado varchar(30));
+insert into estado(idestado,estado)values(1,'Pendiente'),(2,'Emitida'),(3,'Cancelada');
 
 
 /*###########################*/
@@ -40,20 +45,22 @@ create table idestado(idestado int, estado varchar(2));
 -- Table `Sys_ProyectoBarberSpa`.`tb_EstadoCivil` ---
 -- -----------------------------------------------------
 CREATE TABLE `tb_EstadoCivil` (idEstadoCivil VARCHAR(2) NOT NULL,descripcion VARCHAR(45) NULL,PRIMARY KEY (idEstadoCivil));
+insert into tb_EstadoCivil(idestadocivil,descripcion)values('S','Soltero'),('C','Casado'),('NI','No Informado');
 -- -----------------------------------------------------
 -- Table `Sys_ProyectoBarberSpa`.`tb_tipdoc`
 -- -----------------------------------------------------
-CREATE TABLE `tb_tipdoc` (idTipdoc VARCHAR(2) NOT NULL, descripcion VARCHAR(50) NOT NULL,PRIMARY KEY (idTipdoc));
-
+CREATE TABLE `tb_tipdoc` (idTipdoc VARCHAR(3) NOT NULL, descripcion VARCHAR(50) NOT NULL,PRIMARY KEY (idTipdoc));
+insert into tb_tipdoc(idtipdoc,descripcion)values('DNI','DNI'),('RUC','RUC'),('PAS','Pasaporte'),('CEX','Carnet Extranjeria');
 -- -----------------------------------------------------
 -- Table `Sys_ProyectoBarberSpa`.`tb_Sexo`
 -- -----------------------------------------------------
 CREATE TABLE`tb_Sexo` (`idSexo` VARCHAR(2) NOT NULL,`sexo` VARCHAR(50) NULL,PRIMARY KEY (`idSexo`));
-  
+  insert into tb_sexo(idsexo,sexo)values('M','Masculino'),('F','Femenino'),('NI','No Informado');
   -- -----------------------------------------------------
 -- Table `Sys_ProyectoBarberSpa`.`tb_TipoVia`
 -- -----------------------------------------------------
-CREATE TABLE `tb_TipoVia` (`idTipoVia` VARCHAR(2) NOT NULL,`descripcion` VARCHAR(45) NULL,PRIMARY KEY (`idTipoVia`));
+CREATE TABLE `tb_TipoVia` (`idTipoVia` VARCHAR(5) NOT NULL,`descripcion` VARCHAR(50) NULL,PRIMARY KEY (`idTipoVia`));
+insert into tb_tipovia(idtipovia,descripcion)values('AV.','Avenida'),('Cl','Calle'),('PJ','Pasaje'),('Pr','Paradero');
   -- -------------------------
 -- Table tb_departamento - tb-provincia - tb_diostrito
 -- ------------------------
@@ -65,7 +72,7 @@ create table tb_distrito(iddepartamento char(2),idprovincia char(2),iddistrito c
 -- Table `Sys_ProyectoBarberSpa`.`tb_segmento` --Este campo nos permitira categorizar nuestros clientes. VIP - NORMAL ETC
 -- -----------------------------------------------------
 CREATE TABLE `tb_segmento` (`idSegmento` INT NOT NULL,`segmento` VARCHAR(45) NULL,PRIMARY KEY (`idSegmento`));
-  
+insert into tb_segmento(idsegmento,segmento)values(1,'VIP'),(2,'Premium'),(3,'Frecuente'),(4,'Regular');  
   
   /*TB PRINCIPALES*/
 CREATE TABLE `tb_cliente` (
@@ -94,11 +101,11 @@ CREATE TABLE `tb_cliente` (
   `canVisitas` INT NULL,
   PRIMARY KEY (`idCliente`),
   foreign key (iddepartamento) references tb_distrito(iddistrito),
-    FOREIGN KEY (`idEstadoCivil`)   REFERENCES `Sys_ProyectoBarberSpa`.`tb_EstadoCivil` (`idEstadoCivil`),
-    FOREIGN KEY (`idTipoDoc`)   REFERENCES `Sys_ProyectoBarberSpa`.`tb_tipdoc` (`idTipdoc`),
-    FOREIGN KEY (`idSexo`)    REFERENCES `Sys_ProyectoBarberSpa`.`tb_Sexo` (`idSexo`),
-    FOREIGN KEY (`idTipoVia`)  REFERENCES `Sys_ProyectoBarberSpa`.`tb_TipoVia` (`idTipoVia`),
-    FOREIGN KEY (`segmento`)   REFERENCES `Sys_ProyectoBarberSpa`.`tb_segmento` (`idSegmento`));
+    FOREIGN KEY (`idEstadoCivil`)   REFERENCES `tb_EstadoCivil` (`idEstadoCivil`),
+    FOREIGN KEY (`idTipoDoc`)   REFERENCES `tb_tipdoc` (`idTipdoc`),
+    FOREIGN KEY (`idSexo`)    REFERENCES `tb_Sexo` (`idSexo`),
+    FOREIGN KEY (`idTipoVia`)  REFERENCES `tb_TipoVia` (`idTipoVia`),
+    FOREIGN KEY (`segmento`)   REFERENCES `tb_segmento` (`idSegmento`));
     
     
 -- ###################################################
@@ -107,10 +114,11 @@ CREATE TABLE `tb_cliente` (
 create table fidelizacion(
 id int auto_increment,
 idcliente int,
-codigocliente varchar(8) primary key unique,
+codigocliente varchar(8),
 cantVisitas int default 0,
 descuento decimal(9,2),
 fechregistro date,
+primary key(id,codigocliente),
 foreign key(idcliente) references tb_cliente(idCliente)
 );
 
@@ -135,8 +143,8 @@ foreign key(idempleado) references empleado(idemp),foreign key(dia)references di
 create table controlHorario(id int auto_increment primary key,idempleado int,fecha datetime default now());
 
 -- (Se va a asociar los empleados con la categoria - especialidad)
-create table empleadoEspecialidad(idempleado int,idcategoria int,fecha date default now(),
-foreign key(idempleado) references empleado(idemp),foreign key(idcategoria)references categorias(idcategoria));
+create table empleadoEspecialidad(idempleado int,idcategoria int,fecha datetime default now(),
+foreign key(idempleado) references empleado(idemp),foreign key(idcategoria)references categorias(id));
 
     
 /*###########################*/
@@ -153,7 +161,7 @@ apeMaterno varchar(50),
 nombre varchar(50),
 celular varchar(15),
 pinseguridad varchar(4),
-fechregistro date,
+fechregistro datetime default now(),
 fechaUltimoSesion datetime,
 token varchar(50),
 isactivo int default 0,
@@ -163,6 +171,18 @@ foreign key(idcliente) references tb_cliente(idcliente),
 foreign key(idempleado) references empleado(idemp),
 foreign key(idrol) references rol(idrol)
 );
+insert into usuario(idusuario,password,correo,idrol,nombre,isactivo)values('rootprueba','123456','adrian.cucho@publitecperu.com','R','Adrian',1);
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -286,7 +306,6 @@ foreign key(idempleado)references empleado(idemp)
 -- ##########################################################
 -- TABLAS DE AGENDA
 -- ##########################################################
-create table dia(id varchar(3), dia varchar(30));
 create table horas(hora time);
 create table agenda(
 idagenda int auto_increment primary key,
