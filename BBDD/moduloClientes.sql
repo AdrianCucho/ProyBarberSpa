@@ -6,6 +6,7 @@
 create database SYS_PRUEBA1 DEFAULT CHARACTER SET utf8;
 USE SYS_PRUEBA1;
 
+
 /**########################*/
 -- TABLAS DE CONFIGURACION
 /**########################*/

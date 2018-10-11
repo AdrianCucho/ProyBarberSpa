@@ -1,20 +1,3 @@
-<?php 
-	require '../config/database.php';
-	include '../config/funciones.php';
-
-	$errors = array();
-
-	if (!empty($_POST)) {
-		$usuario = $mysqli->real_escape_string($_POST('user'));
-		$password = $mysqli->real_escape_string($_POST('password'));
-
-		if(isNullLogin($usuario, $password)){
-			$errors[] = "Debe llenar todos los datos";
-		}
-
-	}
-?>
-
 
 
 <!DOCTYPE html>
