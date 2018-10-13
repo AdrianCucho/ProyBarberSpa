@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>PRINCIPAL</title>
 	<link rel="stylesheet" type="text/css" href="../css/varios.css">
 	<link rel="stylesheet" type="text/css" href="../css/banner.css">
+	
 </head>
 <body>
 

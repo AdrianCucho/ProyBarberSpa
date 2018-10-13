@@ -1,12 +1,16 @@
 <?php
+	$root = $_SERVER['DOCUMENT_ROOT'];
 
-	include ('../config/database.php');
-	include '../config/funciones.php';
+	require_once $root.'/ProyBarberSpa/config/database.php';
+	require_once $_SERVER["DOCUMENT_ROOT"]."/ProyBarberSpa/config/funciones.php";
 
 	$errors = array();
 
 	if (!empty($_POST)) {
-		# code...
+		$usuario = mysqli -> real_escape_string($_POST['usuario'])
+		$password = mysqli->real_escape_string($_POST['password'])
+		$correo = mysqli->real_escape_string($_POST['correo'])
+		$nombre = mysqli->real_escape_string($_POST['nombre'])
 	}
 ?>
 
@@ -14,8 +18,13 @@
 <html>
 <head>
 	<title>Registrar Usuario</title>
+	<link rel="stylesheet" type="text/css" href="css/varios.css">
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+	<link rel="stylesheet" type="text/css" href="../css/principal.css">
 </head>
+
 <body>
+
 	<form id="formu-registro" action="<?php $_SERVER['PHP_SELF'] ?>" method="POST">
 		<table>
 			<tr><td>usuario</td><td><input type="text" name="usuario"/></td></tr>
@@ -33,8 +42,3 @@
 
 
 
-
-<?php
-
-echo 'Te amo';
-?>

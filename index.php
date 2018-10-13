@@ -1,3 +1,16 @@
+<?php 
+	
+	require_once 'config/database.php';
+	require_once 'config/funciones.php';
+
+	$errors = array();
+
+	if (!empty($_POST)) {
+		echo "Hola";
+		}
+
+?>
+
 
 
 <!DOCTYPE html>
