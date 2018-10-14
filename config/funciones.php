@@ -13,10 +13,10 @@ function isNullLogin($usuario, $password){
 
 	function login($usuario, $password)
 	{
-		global $mysqli;
+		global $con;
 		
-		$stmt = $mysqli->prepare("SELECT id, id_tipo, password FROM usuarios WHERE usuario = ? || correo = ? LIMIT 1");
-		$stmt->bind_param("ss", $usuario, $usuario);
+		$stmt = $con->prepare("SELECT idusuario, idrol, password FROM usuario WHERE idusuario = ? || correo = ? and password = ?LIMIT 1 ");
+		$stmt->bind_param("sss", $usuario, $usuario,$password);
 		$stmt->execute();
 		$stmt->store_result();
 		$rows = $stmt->num_rows;
@@ -25,28 +25,60 @@ function isNullLogin($usuario, $password){
 			
 			if(isActivo($usuario)){
 				
-				$stmt->bind_result($id, $id_tipo, $passwd);
+				$stmt->bind_result($idusuario, $idrol, $contraseña);
 				$stmt->fetch();
-				
-				$validaPassw = password_verify($password, $passwd);
-				
-				if($validaPassw){
-					
-					lastSession($id);
-					$_SESSION['id_usuario'] = $id;
-					$_SESSION['tipo_usuario'] = $id_tipo;
-					
-					header("location: welcome.php");
-					} else {
-					
-					$errors = "La contrase&ntilde;a es incorrecta";
-				}
-				} else {
-				$errors = 'El usuario no esta activo';
+
+				if($contraseña == $password){
+
+				lastSession($idusuario);
+					$_SESSION['idusuario'] = $idusuario;
+					$_SESSION['idrol'] = $idrol;
+
+					if ($idrol == 'R'){ 
+						header("location: view/principal.php");
+					}else if($idrol == 'V'){ 
+						header("location: view/principalVentas.php");
+					}else if($idrol == 'A'){ 
+						header("location: view/principalAdministrador.php");
+					}else{
+						header("location: view/principalRecepcion.php");
+					}
+
+				}else{
+					$errors = "La contraseña es incorrecta";
+				}		
+				$errors ="Usuario no se encuentra activo";	
 			}
-			} else {
-			$errors = "El nombre de usuario o correo electr&oacute;nico no existe";
+			$errors="Usuario o incorrecto";
 		}
 		return $errors;
 	}
+
+
+	function lastSession($id){
+		global $con;
+
+		$stmt = $con->prepare("update usuario set fechaultimosesion = now() where idusuario =?");
+		$stmt->bind_param('s',$id);
+		$stmt->execute();
+		$stmt->close();
+
+	}
+
+	function isActivo($id){
+		global $con;
+
+		$stmt = $con->prepare("select isactivo from usuario where idusuario = ? ");
+		$stmt->bin_param('s',$id);
+		$stmt->execute();
+		$stmt->bind_result($activacion);
+		$stmt->fetch();
+
+		if ($activacion == 1) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 ?>

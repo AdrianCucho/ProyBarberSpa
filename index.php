@@ -5,8 +5,17 @@
 
 	$errors = array();
 
+	//valida el POST
 	if (!empty($_POST)) {
-		echo "Hola";
+		
+		$usuario = $con->real_escape_string($_POST['user']);
+		$password = $con->real_escape_string($_POST['password']);
+
+		if (isNullLogin($usuario,$password)) {
+			$errors[] = "Debe ingresar su usuario y/o contraseña";	
+			}
+
+			$errors[] = login($usuario,$password);
 		}
 
 ?>

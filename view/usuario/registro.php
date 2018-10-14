@@ -7,7 +7,7 @@
 	$errors = array();
 
 	if (!empty($_POST)) {
-		$usuario = mysqli -> real_escape_string($_POST['usuario'])
+		$usuario = mysqli->real_escape_string($_POST['usuario'])
 		$password = mysqli->real_escape_string($_POST['password'])
 		$correo = mysqli->real_escape_string($_POST['correo'])
 		$nombre = mysqli->real_escape_string($_POST['nombre'])
