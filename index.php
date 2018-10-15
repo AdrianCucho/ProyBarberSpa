@@ -1,5 +1,5 @@
-<?php 
-	
+<?php
+
 	require_once 'config/database.php';
 	require_once 'config/funciones.php';
 
@@ -7,18 +7,19 @@
 
 	//valida el POST
 	if (!empty($_POST)) {
-		
+
 		$usuario = $con->real_escape_string($_POST['user']);
 		$password = $con->real_escape_string($_POST['password']);
 
 		if (isNullLogin($usuario,$password)) {
-			$errors[] = "Debe ingresar su usuario y/o contraseña";	
+			$errors[] = "Debe ingresar su usuario y/o contraseña";
 			}
 
 			$errors[] = login($usuario,$password);
 		}
 
 ?>
+
 
 
 
@@ -32,7 +33,7 @@
 
 </head>
 <body >
-	
+
 	<div id="block1">
 	</div>
 
